@@ -108,6 +108,18 @@ public class Tradeline {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + code;
+        result = prime * result + ((currentBalance == null) ? 0 : currentBalance.hashCode());
+        result = prime * result + ((monthlyPayment == null) ? 0 : monthlyPayment.hashCode());
+        result = prime * result + ((reportedDate == null) ? 0 : reportedDate.hashCode());
+        result = prime * result + subcode;
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
