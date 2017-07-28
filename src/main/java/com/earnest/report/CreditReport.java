@@ -108,6 +108,18 @@ public class CreditReport {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((fixedExpensesBeforeEducation == null)
+                ? 0
+                : fixedExpensesBeforeEducation.hashCode());
+        result = prime * result + (hasMortgageTradeline ? 1231 : 1237);
+        result = prime * result + ((tradelines == null) ? 0 : tradelines.hashCode());
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
