@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -49,11 +50,14 @@ public class Application {
         }
         catch (FileNotFoundException e) {
             System.err.println(reportPath + ": File not found");
+
             System.exit(ExitStatus.FILE_NOT_FOUND.code());
         }
         catch (IOException e) {
-            System.err.println(reportPath + ": Unable to parse file");
-            System.exit(ExitStatus.FILE_PARSING_ERROR.code());
+            System.err.println(reportPath + ": I/O error occurred");
+            e.printStackTrace();
+
+            System.exit(ExitStatus.IO_ERROR_OCCURRED.code());
         }
 
         System.exit(ExitStatus.SUCCESS.code());
@@ -111,18 +115,31 @@ public class Application {
 
     private static void printCreditReportJson(String reportPath) throws IOException {
         BufferedReader br = null;
-        if (reportPath != null) {
-            br = new BufferedReader(new FileReader(reportPath));
+        Reader reader = null;
+
+        try {
+            if (reportPath != null) {
+                reader = new FileReader(reportPath);
+            }
+            else {
+                reader = new InputStreamReader(System.in);
+            }
+
+            br = new BufferedReader(reader);
+            CreditReport cr = populateCreditReport(br);
+
+            // Print parsed credit report with derived facts
+            System.out.println(cr.toString());
         }
-        else {
-            br = new BufferedReader(new InputStreamReader(System.in));
+        finally {
+            if (br != null) {
+                br.close();
+            }
+
+            if (reader != null) {
+                reader.close();
+            }
         }
-
-        CreditReport cr = populateCreditReport(br);
-
-
-        // Print parsed credit report with derived facts
-        System.out.println(cr.toString());
     }
 
     private static CreditReport populateCreditReport(BufferedReader br) throws IOException {

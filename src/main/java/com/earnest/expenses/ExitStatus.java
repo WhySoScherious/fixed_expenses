@@ -5,7 +5,7 @@ enum ExitStatus {
     INVALID_ARG_COUNT(-1),
     INVALID_OPTION(-2),
     FILE_NOT_FOUND(1),
-    FILE_PARSING_ERROR(2);
+    IO_ERROR_OCCURRED(2);
 
     private int code;
 
